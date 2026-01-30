@@ -1,14 +1,14 @@
-// Main application module for Sleep Research Funding Dashboard
+// Main application module for Research Funding Analysis Dashboard
 
 import { showLoading, showError, debounce } from "./utils.js";
 import {
   loadKeywords,
   loadGrants,
   processGrantsData,
-  classifyGrantsAsSleep,
+  classifyGrantsByKeywords,
   getAllGrants,
-  getSleepKeywords,
-  updateSleepKeywords,
+  getClassificationKeywords,
+  updateClassificationKeywords,
   getDefaultKeywords,
 } from "./data-loader.js";
 import {
@@ -33,7 +33,7 @@ import {
 } from "./keyword-manager.js";
 import {
   updateAgencyChart,
-  updateSleepChart,
+  updateSubsetChart,
   destroyCharts,
 } from "./charts.js";
 import {
@@ -60,7 +60,7 @@ function getGrantById(id) {
 function updateDashboard() {
   updateKPIs(appState.filteredGrants);
   updateAgencyChart(appState.filteredGrants, "bar");
-  updateSleepChart(appState.filteredGrants, "doughnut");
+  updateSubsetChart(appState.filteredGrants, "doughnut");
   updateTopTables(appState.filteredGrants);
   updateDataTable(appState.filteredGrants);
 }
@@ -71,13 +71,13 @@ function handleFilterChange() {
   const organisation = document.getElementById("filter-organisation").value;
   const scheme = document.getElementById("filter-scheme").value;
   const investigator = document.getElementById("filter-investigator").value;
-  const sleepFilter = document.getElementById("filter-sleep").value;
+  const subsetFilter = document.getElementById("filter-subset").value;
 
   updateFilter("fundingBody", fundingBody);
   updateFilter("organisation", organisation);
   updateFilter("scheme", scheme);
   updateFilter("investigator", investigator);
-  updateFilter("sleepFilter", sleepFilter);
+  updateFilter("subsetFilter", subsetFilter);
 
   appState.filteredGrants = getFilteredGrants(appState.grants);
   updateDashboard();
@@ -91,7 +91,7 @@ function handleAddKeyword() {
   const updatedKeywords = addKeyword(newKeyword, appState.keywords);
   if (updatedKeywords) {
     appState.keywords = updatedKeywords;
-    updateSleepKeywords(appState.keywords);
+    updateClassificationKeywords(appState.keywords);
     renderKeywordChips(appState.keywords, handleRemoveKeyword);
     appState.filteredGrants = getFilteredGrants(appState.grants);
     updateDashboard();
@@ -101,7 +101,7 @@ function handleAddKeyword() {
 
 function handleRemoveKeyword(keywordToRemove) {
   appState.keywords = removeKeyword(keywordToRemove, appState.keywords);
-  updateSleepKeywords(appState.keywords);
+  updateClassificationKeywords(appState.keywords);
   renderKeywordChips(appState.keywords, handleRemoveKeyword);
   appState.filteredGrants = getFilteredGrants(appState.grants);
   updateDashboard();
@@ -119,7 +119,7 @@ function handleRemoveAllKeywords() {
     )
   ) {
     appState.keywords = removeAllKeywords();
-    updateSleepKeywords(appState.keywords);
+    updateClassificationKeywords(appState.keywords);
     renderKeywordChips(appState.keywords, handleRemoveKeyword);
     appState.filteredGrants = getFilteredGrants(appState.grants);
     updateDashboard();
@@ -137,7 +137,7 @@ async function handleRestoreDefaultKeywords() {
 
   try {
     appState.keywords = restoreDefaultKeywords(getDefaultKeywords());
-    updateSleepKeywords(appState.keywords);
+    updateClassificationKeywords(appState.keywords);
     renderKeywordChips(appState.keywords, handleRemoveKeyword);
     appState.filteredGrants = getFilteredGrants(appState.grants);
     updateDashboard();
@@ -163,7 +163,7 @@ async function initializeApp() {
 
     // Process and classify grants
     appState.grants = processGrantsData(rawGrants);
-    appState.grants = classifyGrantsAsSleep(appState.grants);
+    appState.grants = classifyGrantsByKeywords(appState.grants);
 
     // Apply initial filters
     appState.filteredGrants = getFilteredGrants(appState.grants);
@@ -203,7 +203,7 @@ function setupEventListeners() {
     .getElementById("filter-scheme")
     .addEventListener("change", handleFilterChange);
   document
-    .getElementById("filter-sleep")
+    .getElementById("filter-subset")
     .addEventListener("change", handleFilterChange);
 
   // Investigator search with debounce
@@ -219,7 +219,7 @@ function setupEventListeners() {
       document.getElementById("filter-organisation").value = "";
       document.getElementById("filter-scheme").value = "";
       document.getElementById("filter-investigator").value = "";
-      document.getElementById("filter-sleep").value = "";
+      document.getElementById("filter-subset").value = "";
 
       resetFilters();
       appState.filteredGrants = getFilteredGrants(appState.grants);
@@ -243,8 +243,8 @@ function setupEventListeners() {
       // Update chart
       if (chartName === "agency") {
         updateAgencyChart(appState.filteredGrants, chartType);
-      } else if (chartName === "sleep") {
-        updateSleepChart(appState.filteredGrants, chartType);
+      } else if (chartName === "subset") {
+        updateSubsetChart(appState.filteredGrants, chartType);
       }
     });
   });

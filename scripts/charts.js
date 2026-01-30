@@ -1,10 +1,10 @@
-// Charts module for Sleep Research Funding Dashboard
+// Charts module for Research Funding Analysis Dashboard
 
 import { formatCurrency, formatCurrencyFull } from "./utils.js";
 
 let charts = {
   agency: null,
-  sleep: null,
+  subset: null,
 };
 
 export function updateAgencyChart(grants, type = "bar") {
@@ -12,13 +12,13 @@ export function updateAgencyChart(grants, type = "bar") {
 
   // Calculate funding by agency
   const agencyData = {};
-  const agencySleepData = {};
+  const agencySubsetData = {};
 
   grants.forEach((grant) => {
     const body = grant.fundingBody || "Unknown";
     agencyData[body] = (agencyData[body] || 0) + grant.funding;
-    if (grant.isSleep) {
-      agencySleepData[body] = (agencySleepData[body] || 0) + grant.funding;
+    if (grant.isInSubset) {
+      agencySubsetData[body] = (agencySubsetData[body] || 0) + grant.funding;
     }
   });
 
@@ -26,7 +26,7 @@ export function updateAgencyChart(grants, type = "bar") {
     .filter((k) => k && k !== "Unknown")
     .sort();
   const totalValues = labels.map((l) => agencyData[l] || 0);
-  const sleepValues = labels.map((l) => agencySleepData[l] || 0);
+  const subsetValues = labels.map((l) => agencySubsetData[l] || 0);
 
   // Destroy existing chart if present
   if (charts.agency) {
@@ -46,8 +46,8 @@ export function updateAgencyChart(grants, type = "bar") {
             borderRadius: 4,
           },
           {
-            label: "Sleep Research Funding",
-            data: sleepValues,
+            label: "Subset Funding",
+            data: subsetValues,
             backgroundColor: "#ed8936",
             borderRadius: 4,
           },
@@ -126,29 +126,29 @@ export function updateAgencyChart(grants, type = "bar") {
   }
 }
 
-export function updateSleepChart(grants, type = "doughnut") {
-  const ctx = document.getElementById("chart-sleep").getContext("2d");
+export function updateSubsetChart(grants, type = "doughnut") {
+  const ctx = document.getElementById("chart-subset").getContext("2d");
 
-  const sleepFunding = grants
-    .filter((g) => g.isSleep)
+  const subsetFunding = grants
+    .filter((g) => g.isInSubset)
     .reduce((sum, g) => sum + g.funding, 0);
   const otherFunding = grants
-    .filter((g) => !g.isSleep)
+    .filter((g) => !g.isInSubset)
     .reduce((sum, g) => sum + g.funding, 0);
 
   // Destroy existing chart if present
-  if (charts.sleep) {
-    charts.sleep.destroy();
+  if (charts.subset) {
+    charts.subset.destroy();
   }
 
   if (type === "doughnut") {
-    charts.sleep = new Chart(ctx, {
+    charts.subset = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: ["Sleep Research", "Other Research"],
+        labels: ["Selected Subset", "Other Grants"],
         datasets: [
           {
-            data: [sleepFunding, otherFunding],
+            data: [subsetFunding, otherFunding],
             backgroundColor: ["#ed8936", "#a0aec0"],
             borderWidth: 0,
           },
@@ -182,14 +182,14 @@ export function updateSleepChart(grants, type = "doughnut") {
       },
     });
   } else {
-    charts.sleep = new Chart(ctx, {
+    charts.subset = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["Sleep Research", "Other Research"],
+        labels: ["Selected Subset", "Other Grants"],
         datasets: [
           {
             label: "Funding Amount",
-            data: [sleepFunding, otherFunding],
+            data: [subsetFunding, otherFunding],
             backgroundColor: ["#ed8936", "#a0aec0"],
             borderRadius: 4,
           },
@@ -230,8 +230,8 @@ export function destroyCharts() {
     charts.agency.destroy();
     charts.agency = null;
   }
-  if (charts.sleep) {
-    charts.sleep.destroy();
-    charts.sleep = null;
+  if (charts.subset) {
+    charts.subset.destroy();
+    charts.subset = null;
   }
 }

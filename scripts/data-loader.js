@@ -1,8 +1,8 @@
-// Data loading and processing module for Sleep Research Funding Dashboard
+// Data loading and processing module for Research Funding Analysis Dashboard
 
 import {
   parseFunding,
-  isSleepRelated,
+  isKeywordRelated,
   showLoading,
   showError,
 } from "./utils.js";
@@ -44,7 +44,7 @@ const defaultKeywords = [
 ];
 
 // Application state
-let sleepKeywords = [];
+let classificationKeywords = [];
 let allGrants = [];
 
 // Load keywords from CSV file
@@ -60,27 +60,27 @@ export async function loadKeywords() {
             skipEmptyLines: true,
             complete: function (results) {
               // Extract keywords from the parsed data
-              sleepKeywords = results.data
+              classificationKeywords = results.data
                 .map((row) => row.Keywords)
                 .filter((keyword) => keyword && keyword.trim() !== "");
 
               console.log(
-                `Loaded ${sleepKeywords.length} keywords from keywords.csv`,
+                `Loaded ${classificationKeywords.length} keywords from keywords.csv`,
               );
-              console.log("Keywords:", sleepKeywords);
-              resolve(sleepKeywords);
+              console.log("Keywords:", classificationKeywords);
+              resolve(classificationKeywords);
             },
             error: function (error) {
               console.error("Error loading keywords CSV:", error);
               showError("Error loading keywords file. Using default keywords.");
               // Fallback to default keywords
-              sleepKeywords = defaultKeywords;
+              classificationKeywords = defaultKeywords;
               console.log(
                 "Using default keywords:",
-                sleepKeywords.length,
+                classificationKeywords.length,
                 "keywords",
               );
-              resolve(sleepKeywords);
+              resolve(classificationKeywords);
             },
           });
         })
@@ -88,24 +88,24 @@ export async function loadKeywords() {
           console.error("Error fetching keywords CSV:", error);
           showError("Error loading keywords file. Using default keywords.");
           // Fallback to default keywords
-          sleepKeywords = defaultKeywords;
+          classificationKeywords = defaultKeywords;
           console.log(
             "Using default keywords due to error:",
-            sleepKeywords.length,
+            classificationKeywords.length,
             "keywords",
           );
-          resolve(sleepKeywords);
+          resolve(classificationKeywords);
         });
     } catch (error) {
       console.error("Error in loadKeywords:", error);
       // Fallback to default keywords
-      sleepKeywords = defaultKeywords;
+      classificationKeywords = defaultKeywords;
       console.log(
         "Using default keywords due to catch error:",
-        sleepKeywords.length,
+        classificationKeywords.length,
         "keywords",
       );
-      resolve(sleepKeywords);
+      resolve(classificationKeywords);
     }
   });
 }
@@ -161,18 +161,18 @@ export function processGrantsData(rawData) {
       date: row.Date || "",
       funding: parseFunding(row.Funding),
       summary: row.Summary || "",
-      isSleep: false, // Will be set by classifyGrantsAsSleep
+      isInSubset: false, // Will be set by classifyGrantsByKeywords
     }));
 
   console.log(`Processed ${allGrants.length} grants`);
   return allGrants;
 }
 
-// Classify grants as sleep research based on current keywords
-export function classifyGrantsAsSleep(grants) {
+// Classify grants based on current keywords
+export function classifyGrantsByKeywords(grants) {
   return grants.map((grant) => ({
     ...grant,
-    isSleep: isSleepRelated(grant.summary, sleepKeywords),
+    isInSubset: isKeywordRelated(grant.summary, classificationKeywords),
   }));
 }
 
@@ -181,23 +181,23 @@ export function getAllGrants() {
   return allGrants;
 }
 
-// Get sleep keywords
-export function getSleepKeywords() {
-  return sleepKeywords;
+// Get classification keywords
+export function getClassificationKeywords() {
+  return classificationKeywords;
 }
 
-// Update sleep keywords and reclassify grants
-export function updateSleepKeywords(newKeywords) {
-  sleepKeywords = [...newKeywords];
+// Update classification keywords and reclassify grants
+export function updateClassificationKeywords(newKeywords) {
+  classificationKeywords = [...newKeywords];
 
   // Reclassify all grants with new keywords
   allGrants = allGrants.map((grant) => ({
     ...grant,
-    isSleep: isSleepRelated(grant.summary, sleepKeywords),
+    isInSubset: isKeywordRelated(grant.summary, classificationKeywords),
   }));
 
-  console.log(`Updated keywords to ${sleepKeywords.length} keywords`);
-  return sleepKeywords;
+  console.log(`Updated keywords to ${classificationKeywords.length} keywords`);
+  return classificationKeywords;
 }
 
 // Get default keywords

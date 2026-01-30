@@ -1,4 +1,4 @@
-// Utility functions for the Sleep Research Funding Dashboard
+// Utility functions for the Research Funding Analysis Dashboard
 
 export function formatCurrency(value) {
   if (value >= 1e9) {
@@ -27,10 +27,10 @@ export function parseFunding(fundingStr) {
   return isNaN(value) ? 0 : value;
 }
 
-export function isSleepRelated(summary, sleepKeywords) {
-  if (!summary || sleepKeywords.length === 0) return false;
+export function isKeywordRelated(summary, keywords) {
+  if (!summary || keywords.length === 0) return false;
   const lowerSummary = summary.toLowerCase();
-  return sleepKeywords.some((keyword) => {
+  return keywords.some((keyword) => {
     // Use word boundary matching to avoid false positives
     const regex = new RegExp("\\b" + keyword + "\\b", "i");
     return regex.test(lowerSummary);

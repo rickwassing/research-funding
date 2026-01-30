@@ -1,4 +1,4 @@
-// Filter logic module for Sleep Research Funding Dashboard
+// Filter logic module for Research Funding Analysis Dashboard
 
 // Filter state
 let currentFilters = {
@@ -6,12 +6,12 @@ let currentFilters = {
   organisation: "",
   scheme: "",
   investigator: "",
-  sleepFilter: "",
+  subsetFilter: "",
 };
 
 // Apply filters to grants
 export function applyFilters(grants, filters = currentFilters) {
-  const { fundingBody, organisation, scheme, investigator, sleepFilter } =
+  const { fundingBody, organisation, scheme, investigator, subsetFilter } =
     filters;
 
   return grants.filter((grant) => {
@@ -23,8 +23,8 @@ export function applyFilters(grants, filters = currentFilters) {
       !grant.investigators.toLowerCase().includes(investigator.toLowerCase())
     )
       return false;
-    if (sleepFilter === "sleep" && !grant.isSleep) return false;
-    if (sleepFilter === "other" && grant.isSleep) return false;
+    if (subsetFilter === "subset" && !grant.isInSubset) return false;
+    if (subsetFilter === "not-subset" && grant.isInSubset) return false;
     return true;
   });
 }
@@ -36,7 +36,7 @@ export function resetFilters() {
     organisation: "",
     scheme: "",
     investigator: "",
-    sleepFilter: "",
+    subsetFilter: "",
   };
   return currentFilters;
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASA Sleep Research Funding Dashboard</title>
+    <title>Research Funding Analysis Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,8 +22,8 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h4>🛏️ Sleep Funding</h4>
-            <small>Australasian Sleep Association<br>Research Committee</small>
+            <h4>🔍 Funding Analysis</h4>
+            <small>Research Funding Dashboard<br>Keyword-based Classification</small>
         </div>
 
         <h5>🔍 Filters</h5>
@@ -55,22 +55,25 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Grant Type</label>
-            <select class="form-select form-select-sm" id="filter-sleep">
+            <label class="form-label">Grant Classification</label>
+            <select class="form-select form-select-sm" id="filter-subset">
                 <option value="">All Grants</option>
-                <option value="sleep">Sleep Research Only</option>
-                <option value="other">Non-Sleep Only</option>
+                <option value="subset">In Subset Only</option>
+                <option value="not-subset">Not in Subset Only</option>
             </select>
         </div>
 
         <button class="btn btn-outline-secondary btn-sm w-100" id="reset-filters">Reset Filters</button>
+        <br />
+        <br />
+        <small>Version 1.0.0 (30 Jan 2026)</small>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <!-- Keyword Management Section -->
         <div class="keyword-management-card chart-card">
-            <h5>🔑 Sleep Research Keywords</h5>
+            <h5>🔑 Keywords for Grant Classification</h5>
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <small class="text-muted">Click × to remove a keyword</small>
@@ -88,30 +91,30 @@
             </div>
         </div>
 
-        <!-- KPI Cards Row 1 - Sleep Research -->
+        <!-- KPI Cards Row 1 - Selected Subset -->
         <div class="row mb-3">
             <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="kpi-card sleep">
-                    <div class="kpi-label">Sleep Research Funding</div>
-                    <div class="kpi-value" id="kpi-sleep-funding">$0</div>
+                <div class="kpi-card subset">
+                    <div class="kpi-label">Subset Funding Total</div>
+                    <div class="kpi-value" id="kpi-subset-funding">$0</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="kpi-card sleep">
+                <div class="kpi-card subset">
                     <div class="kpi-label">% of Total Funding</div>
-                    <div class="kpi-value" id="kpi-sleep-percentage">0%</div>
+                    <div class="kpi-value" id="kpi-subset-percentage">0%</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="kpi-card sleep">
-                    <div class="kpi-label">Sleep Research Grants</div>
-                    <div class="kpi-value" id="kpi-sleep-grants">0</div>
+                <div class="kpi-card subset">
+                    <div class="kpi-label">Grants in Subset</div>
+                    <div class="kpi-value" id="kpi-subset-grants">0</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="kpi-card sleep">
-                    <div class="kpi-label">Avg Grant (Sleep)</div>
-                    <div class="kpi-value" id="kpi-avg-sleep-grant">$0</div>
+                <div class="kpi-card subset">
+                    <div class="kpi-label">Avg Grant (Subset)</div>
+                    <div class="kpi-value" id="kpi-avg-subset-grant">$0</div>
                 </div>
             </div>
         </div>
@@ -163,14 +166,14 @@
             <div class="col-lg-6 mb-4">
                 <div class="chart-card">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0">Sleep vs Other Funding</h5>
+                        <h5 class="mb-0">Subset vs Other Funding</h5>
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-primary btn-chart-type active" data-chart="sleep" data-type="doughnut">Donut</button>
-                            <button class="btn btn-outline-primary btn-chart-type" data-chart="sleep" data-type="bar">Bar</button>
+                            <button class="btn btn-outline-primary btn-chart-type active" data-chart="subset" data-type="doughnut">Donut</button>
+                            <button class="btn btn-outline-primary btn-chart-type" data-chart="subset" data-type="bar">Bar</button>
                         </div>
                     </div>
                     <div class="chart-container">
-                        <canvas id="chart-sleep"></canvas>
+                        <canvas id="chart-subset"></canvas>
                     </div>
                 </div>
             </div>
@@ -180,7 +183,7 @@
         <div class="row">
             <div class="col-lg-6 mb-4">
                 <div class="chart-card">
-                    <h5>Top 10 Organisations (Sleep Research)</h5>
+                    <h5>Top 10 Organisations (Selected Subset)</h5>
                     <div class="table-responsive" style="max-height: 375px; overflow-y: auto;">
                         <table class="table table-sm table-hover" id="top-orgs-table">
                             <thead class="sticky-top bg-white">
@@ -197,7 +200,7 @@
             </div>
             <div class="col-lg-6 mb-4">
                 <div class="chart-card">
-                    <h5>Top 10 Schemes (Sleep Research)</h5>
+                    <h5>Top 10 Schemes (Selected Subset)</h5>
                     <div class="table-responsive" style="max-height: 375px; overflow-y: auto;">
                         <table class="table table-sm table-hover" id="top-schemes-table">
                             <thead class="sticky-top bg-white">
@@ -239,9 +242,9 @@
         <footer class="mt-4" style="margin-left: calc(-2rem); margin-right: calc(-2rem); margin-bottom: calc(-1.5rem);">
             <div class="container text-center">
                 <p class="mb-0">
-                    Australasian Sleep Association Research Committee | 
+                    Research Funding Analysis Dashboard | 
                     Data from ARC, NHMRC, and MRFF (2020-2026) |
-                    <a href="https://sleep.org.au" target="_blank">sleep.org.au</a>
+                    Keyword-based Classification System
                 </p>
             </div>
         </footer>

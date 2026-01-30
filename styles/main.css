@@ -96,11 +96,11 @@ body {
   letter-spacing: 0.5px;
 }
 
-.kpi-card.sleep {
+.kpi-card.subset {
   border-left: 4px solid var(--accent-color);
 }
 
-.kpi-card.sleep .kpi-value {
+.kpi-card.subset .kpi-value {
   color: var(--accent-color);
 }
 
@@ -135,12 +135,12 @@ body {
   font-weight: 600;
 }
 
-.badge-sleep {
+.badge-subset {
   background-color: var(--accent-color);
   color: white;
 }
 
-.badge-other {
+.badge-not-subset {
   background-color: #a0aec0;
   color: white;
 }

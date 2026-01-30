@@ -1,10 +1,10 @@
-# ASA Sleep Research Funding Dashboard
+# Research Funding Analysis Dashboard
 
-An interactive web application for analyzing Australian government research funding, specifically focused on understanding sleep research funding compared to other research areas.
+An interactive web application for analyzing Australian government research funding using keyword-based classification to identify specific subsets of grants.
 
-**Purpose:** To help the Australasian Sleep Association Research Committee analyze funding patterns, identify trends, and advocate for sleep research funding.
+**Purpose:** To help research committees and analysts identify and analyze specific subsets of grants based on customizable keyword matching.
 
-**Target Audience:** Academics, clinicians, and committee members interested in sleep research funding analysis.
+**Target Audience:** Research analysts, committee members, and academics interested in funding pattern analysis.
 
 ## 🚀 Quick Start
 
@@ -43,10 +43,10 @@ This dashboard analyzes funding data from three Australian government agencies:
 
 It answers key questions:
 
-- How much funding goes to sleep research compared to the total amount of funding?
-- Which organizations receive the most sleep research funding?
-- What are the most common funding schemes for sleep research?
-- How does sleep research funding compare across agencies?
+- How much funding goes to selected subsets compared to the total amount of funding?
+- Which organizations receive the most funding for specific research areas?
+- What are the most common funding schemes for selected subsets?
+- How does funding for specific areas compare across agencies?
 
 ## 🎯 Key Features
 

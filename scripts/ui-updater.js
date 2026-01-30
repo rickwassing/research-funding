@@ -1,27 +1,28 @@
-// UI update module for Sleep Research Funding Dashboard
+// UI update module for Research Funding Analysis Dashboard
 
 import { formatCurrency, formatCurrencyFull } from "./utils.js";
 
 // Update KPI cards
 export function updateKPIs(grants) {
   const totalGrants = grants.length;
-  const sleepGrants = grants.filter((g) => g.isSleep);
+  const subsetGrants = grants.filter((g) => g.isInSubset);
   const totalFunding = grants.reduce((sum, g) => sum + g.funding, 0);
-  const sleepFunding = sleepGrants.reduce((sum, g) => sum + g.funding, 0);
-  const percentage = totalFunding > 0 ? (sleepFunding / totalFunding) * 100 : 0;
+  const subsetFunding = subsetGrants.reduce((sum, g) => sum + g.funding, 0);
+  const percentage =
+    totalFunding > 0 ? (subsetFunding / totalFunding) * 100 : 0;
   const avgGrant = totalGrants > 0 ? totalFunding / totalGrants : 0;
-  const avgSleepGrant =
-    sleepGrants.length > 0 ? sleepFunding / sleepGrants.length : 0;
+  const avgSubsetGrant =
+    subsetGrants.length > 0 ? subsetFunding / subsetGrants.length : 0;
 
-  // Sleep research KPIs (row 1)
-  document.getElementById("kpi-sleep-funding").textContent =
-    formatCurrency(sleepFunding);
-  document.getElementById("kpi-sleep-percentage").textContent =
+  // Subset KPIs (row 1)
+  document.getElementById("kpi-subset-funding").textContent =
+    formatCurrency(subsetFunding);
+  document.getElementById("kpi-subset-percentage").textContent =
     percentage.toFixed(2) + "%";
-  document.getElementById("kpi-sleep-grants").textContent =
-    sleepGrants.length.toLocaleString();
-  document.getElementById("kpi-avg-sleep-grant").textContent =
-    formatCurrency(avgSleepGrant);
+  document.getElementById("kpi-subset-grants").textContent =
+    subsetGrants.length.toLocaleString();
+  document.getElementById("kpi-avg-subset-grant").textContent =
+    formatCurrency(avgSubsetGrant);
 
   // Total KPIs (row 2)
   document.getElementById("kpi-total-funding").textContent =
@@ -41,10 +42,10 @@ export function updateTopTables(grants) {
 }
 
 function updateTopOrgsTable(grants) {
-  const sleepGrants = grants.filter((g) => g.isSleep);
+  const subsetGrants = grants.filter((g) => g.isInSubset);
   const orgStats = {};
 
-  sleepGrants.forEach((grant) => {
+  subsetGrants.forEach((grant) => {
     const org = grant.organisation || "Unknown";
     if (!orgStats[org]) {
       orgStats[org] = { count: 0, funding: 0 };
@@ -74,10 +75,10 @@ function updateTopOrgsTable(grants) {
 }
 
 function updateTopSchemesTable(grants) {
-  const sleepGrants = grants.filter((g) => g.isSleep);
+  const subsetGrants = grants.filter((g) => g.isInSubset);
   const schemeStats = {};
 
-  sleepGrants.forEach((grant) => {
+  subsetGrants.forEach((grant) => {
     const scheme = grant.scheme || "Unknown";
     if (!schemeStats[scheme]) {
       schemeStats[scheme] = { count: 0, funding: 0 };

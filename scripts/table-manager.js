@@ -1,4 +1,4 @@
-// Table manager module for Sleep Research Funding Dashboard
+// Table manager module for Research Funding Analysis Dashboard
 
 import { formatCurrency, formatCurrencyFull } from "./utils.js";
 
@@ -10,11 +10,11 @@ export function initializeDataTable(grants) {
     columns: [
       { data: "id" },
       {
-        data: "isSleep",
+        data: "isInSubset",
         render: function (data) {
           return data
-            ? '<span class="badge badge-sleep">Sleep</span>'
-            : '<span class="badge badge-other">Other</span>';
+            ? '<span class="badge badge-subset">Subset</span>'
+            : '<span class="badge badge-not-subset">Other</span>';
         },
       },
       { data: "fundingBody" },
@@ -93,9 +93,9 @@ function showGrantDetails(grant) {
     grant.funding,
   );
   document.getElementById("modal-agency").textContent = grant.fundingBody;
-  document.getElementById("modal-type").innerHTML = grant.isSleep
-    ? '<span class="badge badge-sleep">Sleep Research</span>'
-    : '<span class="badge badge-other">Other Research</span>';
+  document.getElementById("modal-type").innerHTML = grant.isInSubset
+    ? '<span class="badge badge-subset">In Subset</span>'
+    : '<span class="badge badge-not-subset">Other</span>';
   document.getElementById("modal-org").textContent = grant.organisation;
   document.getElementById("modal-scheme").textContent = grant.scheme;
   document.getElementById("modal-investigators").textContent =
