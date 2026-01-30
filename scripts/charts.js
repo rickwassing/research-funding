@@ -277,7 +277,14 @@ export function updateKeywordDistributionChart(grants, keywords, type = "bar") {
     charts.keywordDistribution.destroy();
   }
 
-  if (type === "bar") {
+  if (type === "bar" || type === "bar-log") {
+    const isLogScale = type === "bar-log";
+
+    // For log scale, add small offset to handle zero values
+    const chartValues = isLogScale
+      ? values.map((v) => (v === 0 ? 0.1 : v)) // Add small offset for log scale
+      : values;
+
     charts.keywordDistribution = new Chart(ctx, {
       type: "bar",
       data: {
@@ -285,7 +292,7 @@ export function updateKeywordDistributionChart(grants, keywords, type = "bar") {
         datasets: [
           {
             label: "Number of Grants",
-            data: values,
+            data: chartValues,
             backgroundColor: "#4299e1",
             borderRadius: 4,
           },
@@ -301,22 +308,33 @@ export function updateKeywordDistributionChart(grants, keywords, type = "bar") {
           tooltip: {
             callbacks: {
               label: function (context) {
-                return `${context.label}: ${context.raw} grant${context.raw !== 1 ? "s" : ""}`;
+                // Show actual value (not offset value for log scale)
+                const actualValue = values[context.dataIndex];
+                return `${context.label}: ${actualValue} grant${actualValue !== 1 ? "s" : ""}`;
               },
             },
           },
         },
         scales: {
           y: {
-            beginAtZero: true,
+            type: isLogScale ? "logarithmic" : "linear",
+            beginAtZero: !isLogScale, // Log scale can't start at 0
+            min: isLogScale ? 0.1 : undefined, // Minimum value for log scale
             ticks: {
               callback: function (value) {
+                // Handle log scale tick formatting
+                if (isLogScale) {
+                  if (value === 0.1) return "0"; // Show 0 for the offset value
+                  if (value < 1) return value.toFixed(1); // Show decimal for small values
+                }
                 return value.toLocaleString();
               },
             },
             title: {
               display: true,
-              text: "Number of Grants",
+              text: isLogScale
+                ? "Number of Grants (Log Scale)"
+                : "Number of Grants",
             },
           },
           x: {

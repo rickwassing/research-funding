@@ -44,6 +44,27 @@ export function initializeDataTable(grants) {
           return `<button class="btn btn-sm btn-outline-primary view-details" data-id="${row.id}">View</button>`;
         },
       },
+      // Hidden search columns
+      {
+        data: "investigators",
+        visible: false,
+        searchable: true,
+      },
+      {
+        data: "summary",
+        visible: false,
+        searchable: true,
+      },
+      {
+        data: "organisation",
+        visible: false,
+        searchable: true,
+      },
+      {
+        data: "scheme",
+        visible: false,
+        searchable: true,
+      },
     ],
     order: [[5, "desc"]],
     pageLength: 25,
@@ -52,9 +73,14 @@ export function initializeDataTable(grants) {
       [10, 25, 50, 100],
     ],
     language: {
-      search: "Search grants:",
+      search: "Search grants (all fields):",
       lengthMenu: "Show _MENU_ grants",
       info: "Showing _START_ to _END_ of _TOTAL_ grants",
+    },
+    search: {
+      regex: false,
+      smart: true,
+      caseInsensitive: true,
     },
   });
 
