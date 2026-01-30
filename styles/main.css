@@ -108,6 +108,21 @@ body {
   border-left: 4px solid var(--secondary-color);
 }
 
+.kpi-card.percentage {
+  border-left: 4px solid var(--success-color);
+}
+
+.kpi-card.percentage .kpi-value {
+  color: var(--success-color);
+}
+
+.kpi-reference {
+  display: block;
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+  opacity: 0.7;
+}
+
 .chart-card {
   background: white;
   border-radius: 12px;

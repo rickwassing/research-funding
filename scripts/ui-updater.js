@@ -3,36 +3,49 @@
 import { formatCurrency, formatCurrencyFull } from "./utils.js";
 
 // Update KPI cards
-export function updateKPIs(grants) {
+export function updateKPIs(grants, totalDatasetCount) {
   const totalGrants = grants.length;
   const subsetGrants = grants.filter((g) => g.isInSubset);
   const totalFunding = grants.reduce((sum, g) => sum + g.funding, 0);
   const subsetFunding = subsetGrants.reduce((sum, g) => sum + g.funding, 0);
-  const percentage =
-    totalFunding > 0 ? (subsetFunding / totalFunding) * 100 : 0;
   const avgGrant = totalGrants > 0 ? totalFunding / totalGrants : 0;
   const avgSubsetGrant =
     subsetGrants.length > 0 ? subsetFunding / subsetGrants.length : 0;
 
+  // Calculate percentages (Row 1 ÷ Row 2)
+  const percentageFunding =
+    totalFunding > 0 ? (subsetFunding / totalFunding) * 100 : 0;
+  const percentageGrants =
+    totalGrants > 0 ? (subsetGrants.length / totalGrants) * 100 : 0;
+  const percentageAvg = avgGrant > 0 ? (avgSubsetGrant / avgGrant) * 100 : 0;
+
   // Subset KPIs (row 1)
   document.getElementById("kpi-subset-funding").textContent =
     formatCurrency(subsetFunding);
-  document.getElementById("kpi-subset-percentage").textContent =
-    percentage.toFixed(2) + "%";
   document.getElementById("kpi-subset-grants").textContent =
     subsetGrants.length.toLocaleString();
   document.getElementById("kpi-avg-subset-grant").textContent =
     formatCurrency(avgSubsetGrant);
 
-  // Total KPIs (row 2)
+  // Total Filtered KPIs (row 2)
   document.getElementById("kpi-total-funding").textContent =
     formatCurrency(totalFunding);
   document.getElementById("kpi-total-grants").textContent =
     totalGrants.toLocaleString();
   document.getElementById("kpi-avg-grant").textContent =
     formatCurrency(avgGrant);
-  document.getElementById("kpi-filtered-grants").textContent =
-    totalGrants.toLocaleString();
+
+  // Update total dataset reference
+  document.getElementById("kpi-total-dataset-grants").textContent =
+    totalDatasetCount.toLocaleString();
+
+  // Percentage KPIs (row 3)
+  document.getElementById("kpi-percentage-funding").textContent =
+    percentageFunding.toFixed(2) + "%";
+  document.getElementById("kpi-percentage-grants").textContent =
+    percentageGrants.toFixed(2) + "%";
+  document.getElementById("kpi-percentage-avg").textContent =
+    percentageAvg.toFixed(2) + "%";
 }
 
 // Update top tables

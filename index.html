@@ -22,7 +22,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h4>🔍 Funding Analysis</h4>
+            <h4>Funding Analysis</h4>
             <small>Research Funding Dashboard<br>Keyword-based Classification</small>
         </div>
 
@@ -54,19 +54,10 @@
             <input type="text" class="form-control form-control-sm" id="filter-investigator" placeholder="Enter name...">
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Grant Classification</label>
-            <select class="form-select form-select-sm" id="filter-subset">
-                <option value="">All Grants</option>
-                <option value="subset">In Subset Only</option>
-                <option value="not-subset">Not in Subset Only</option>
-            </select>
-        </div>
-
         <button class="btn btn-outline-secondary btn-sm w-100" id="reset-filters">Reset Filters</button>
         <br />
         <br />
-        <small>Version 1.0.0 (30 Jan 2026)</small>
+        <small>Version 1.0.1 (30 Jan 2026)</small>
     </div>
 
     <!-- Main Content -->
@@ -93,25 +84,19 @@
 
         <!-- KPI Cards Row 1 - Selected Subset -->
         <div class="row mb-3">
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                 <div class="kpi-card subset">
                     <div class="kpi-label">Subset Funding Total</div>
                     <div class="kpi-value" id="kpi-subset-funding">$0</div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="kpi-card subset">
-                    <div class="kpi-label">% of Total Funding</div>
-                    <div class="kpi-value" id="kpi-subset-percentage">0%</div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                 <div class="kpi-card subset">
                     <div class="kpi-label">Grants in Subset</div>
                     <div class="kpi-value" id="kpi-subset-grants">0</div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                 <div class="kpi-card subset">
                     <div class="kpi-label">Avg Grant (Subset)</div>
                     <div class="kpi-value" id="kpi-avg-subset-grant">$0</div>
@@ -119,30 +104,47 @@
             </div>
         </div>
 
-        <!-- KPI Cards Row 2 - Total -->
-        <div class="row mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+        <!-- KPI Cards Row 2 - Total Filtered -->
+        <div class="row mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                 <div class="kpi-card total">
-                    <div class="kpi-label">Total Funding</div>
+                    <div class="kpi-label">Total Filtered Funding</div>
                     <div class="kpi-value" id="kpi-total-funding">$0</div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                 <div class="kpi-card total">
-                    <div class="kpi-label">Total Grants</div>
+                    <div class="kpi-label">Total Filtered Grants</div>
                     <div class="kpi-value" id="kpi-total-grants">0</div>
+                    <small class="text-muted kpi-reference">of <span id="kpi-total-dataset-grants">0</span> total grants</small>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                 <div class="kpi-card total">
-                    <div class="kpi-label">Avg Grant (All)</div>
+                    <div class="kpi-label">Avg Grant (Filtered)</div>
                     <div class="kpi-value" id="kpi-avg-grant">$0</div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-                <div class="kpi-card total">
-                    <div class="kpi-label">Filtered Grants</div>
-                    <div class="kpi-value" id="kpi-filtered-grants">0</div>
+        </div>
+
+        <!-- KPI Cards Row 3 - Percentages -->
+        <div class="row mb-4">
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
+                <div class="kpi-card percentage">
+                    <div class="kpi-label">% of Filtered Funding</div>
+                    <div class="kpi-value" id="kpi-percentage-funding">0%</div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
+                <div class="kpi-card percentage">
+                    <div class="kpi-label">% of Filtered Grants</div>
+                    <div class="kpi-value" id="kpi-percentage-grants">0%</div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
+                <div class="kpi-card percentage">
+                    <div class="kpi-label">% of Avg Grant</div>
+                    <div class="kpi-value" id="kpi-percentage-avg">0%</div>
                 </div>
             </div>
         </div>

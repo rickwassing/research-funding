@@ -58,7 +58,7 @@ function getGrantById(id) {
 
 // Update dashboard with current state
 function updateDashboard() {
-  updateKPIs(appState.filteredGrants);
+  updateKPIs(appState.filteredGrants, appState.grants.length);
   updateAgencyChart(appState.filteredGrants, "bar");
   updateSubsetChart(appState.filteredGrants, "doughnut");
   updateTopTables(appState.filteredGrants);
@@ -71,13 +71,11 @@ function handleFilterChange() {
   const organisation = document.getElementById("filter-organisation").value;
   const scheme = document.getElementById("filter-scheme").value;
   const investigator = document.getElementById("filter-investigator").value;
-  const subsetFilter = document.getElementById("filter-subset").value;
 
   updateFilter("fundingBody", fundingBody);
   updateFilter("organisation", organisation);
   updateFilter("scheme", scheme);
   updateFilter("investigator", investigator);
-  updateFilter("subsetFilter", subsetFilter);
 
   appState.filteredGrants = getFilteredGrants(appState.grants);
   updateDashboard();
@@ -202,9 +200,6 @@ function setupEventListeners() {
   document
     .getElementById("filter-scheme")
     .addEventListener("change", handleFilterChange);
-  document
-    .getElementById("filter-subset")
-    .addEventListener("change", handleFilterChange);
 
   // Investigator search with debounce
   const investigatorInput = document.getElementById("filter-investigator");
@@ -219,7 +214,6 @@ function setupEventListeners() {
       document.getElementById("filter-organisation").value = "";
       document.getElementById("filter-scheme").value = "";
       document.getElementById("filter-investigator").value = "";
-      document.getElementById("filter-subset").value = "";
 
       resetFilters();
       appState.filteredGrants = getFilteredGrants(appState.grants);

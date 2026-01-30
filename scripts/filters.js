@@ -6,13 +6,11 @@ let currentFilters = {
   organisation: "",
   scheme: "",
   investigator: "",
-  subsetFilter: "",
 };
 
 // Apply filters to grants
 export function applyFilters(grants, filters = currentFilters) {
-  const { fundingBody, organisation, scheme, investigator, subsetFilter } =
-    filters;
+  const { fundingBody, organisation, scheme, investigator } = filters;
 
   return grants.filter((grant) => {
     if (fundingBody && grant.fundingBody !== fundingBody) return false;
@@ -23,8 +21,6 @@ export function applyFilters(grants, filters = currentFilters) {
       !grant.investigators.toLowerCase().includes(investigator.toLowerCase())
     )
       return false;
-    if (subsetFilter === "subset" && !grant.isInSubset) return false;
-    if (subsetFilter === "not-subset" && grant.isInSubset) return false;
     return true;
   });
 }
@@ -36,7 +32,6 @@ export function resetFilters() {
     organisation: "",
     scheme: "",
     investigator: "",
-    subsetFilter: "",
   };
   return currentFilters;
 }
