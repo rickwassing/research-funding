@@ -34,6 +34,8 @@ import {
 import {
   updateAgencyChart,
   updateSubsetChart,
+  updateKeywordDistributionChart,
+  updateYearlyTrendsChart,
   destroyCharts,
 } from "./charts.js";
 import {
@@ -59,6 +61,12 @@ function getGrantById(id) {
 // Update dashboard with current state
 function updateDashboard() {
   updateKPIs(appState.filteredGrants, appState.grants.length);
+  updateKeywordDistributionChart(
+    appState.filteredGrants,
+    appState.keywords,
+    "bar",
+  );
+  updateYearlyTrendsChart(appState.filteredGrants, "number");
   updateAgencyChart(appState.filteredGrants, "bar");
   updateSubsetChart(appState.filteredGrants, "doughnut");
   updateTopTables(appState.filteredGrants);
@@ -239,6 +247,14 @@ function setupEventListeners() {
         updateAgencyChart(appState.filteredGrants, chartType);
       } else if (chartName === "subset") {
         updateSubsetChart(appState.filteredGrants, chartType);
+      } else if (chartName === "keyword-distribution") {
+        updateKeywordDistributionChart(
+          appState.filteredGrants,
+          appState.keywords,
+          chartType,
+        );
+      } else if (chartName === "yearly-trends") {
+        updateYearlyTrendsChart(appState.filteredGrants, chartType);
       }
     });
   });

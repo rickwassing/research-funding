@@ -5,6 +5,7 @@ import {
   isKeywordRelated,
   showLoading,
   showError,
+  parseYear,
 } from "./utils.js";
 
 // Default keywords fallback
@@ -159,12 +160,17 @@ export function processGrantsData(rawData) {
       organisation: row.Organisation || "",
       investigators: row.Investigators || "",
       date: row.Date || "",
+      year: parseYear(row.Date), // Extract year from date
       funding: parseFunding(row.Funding),
       summary: row.Summary || "",
+      // Tokenize summary once for efficient keyword matching
+      tokenizedSummary: new Set(
+        (row.Summary || "").toLowerCase().match(/\b[\w-]+\b/g) || [],
+      ),
       isInSubset: false, // Will be set by classifyGrantsByKeywords
     }));
 
-  console.log(`Processed ${allGrants.length} grants`);
+  console.log(`Processed ${allGrants.length} grants with tokenized summaries`);
   return allGrants;
 }
 
