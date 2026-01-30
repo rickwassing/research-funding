@@ -52,12 +52,14 @@ export function updateAgencyChart(grants, type = "bar") {
             data: totalValues,
             backgroundColor: "#4299e1",
             borderRadius: 4,
+            yAxisID: "y", // Left axis for total funding
           },
           {
             label: "Subset Funding",
             data: subsetValues,
             backgroundColor: "#ed8936",
             borderRadius: 4,
+            yAxisID: "y1", // Right axis for subset funding
           },
         ],
       },
@@ -80,7 +82,30 @@ export function updateAgencyChart(grants, type = "bar") {
         },
         scales: {
           y: {
+            type: "linear",
+            position: "left",
             beginAtZero: true,
+            title: {
+              display: true,
+              text: "Total Funding",
+            },
+            ticks: {
+              callback: function (value) {
+                return formatCurrency(value);
+              },
+            },
+          },
+          y1: {
+            type: "linear",
+            position: "right",
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: "Subset Funding",
+            },
+            grid: {
+              drawOnChartArea: false, // Don't draw grid lines for right axis
+            },
             ticks: {
               callback: function (value) {
                 return formatCurrency(value);

@@ -51,6 +51,12 @@ let appState = {
   filteredGrants: [],
   keywords: [],
   isInitialized: false,
+  chartTypes: {
+    "keyword-distribution": "bar",
+    "yearly-trends": "number",
+    agency: "bar",
+    subset: "doughnut",
+  },
 };
 
 // Get grant by ID
@@ -64,11 +70,14 @@ function updateDashboard() {
   updateKeywordDistributionChart(
     appState.filteredGrants,
     appState.keywords,
-    "bar",
+    appState.chartTypes["keyword-distribution"],
   );
-  updateYearlyTrendsChart(appState.filteredGrants, "number");
-  updateAgencyChart(appState.filteredGrants, "bar");
-  updateSubsetChart(appState.filteredGrants, "doughnut");
+  updateYearlyTrendsChart(
+    appState.filteredGrants,
+    appState.chartTypes["yearly-trends"],
+  );
+  updateAgencyChart(appState.filteredGrants, appState.chartTypes.agency);
+  updateSubsetChart(appState.filteredGrants, appState.chartTypes.subset);
   updateTopTables(appState.filteredGrants);
   updateDataTable(appState.filteredGrants);
 }
@@ -154,7 +163,7 @@ async function handleRestoreDefaultKeywords() {
   } finally {
     // Restore button state
     restoreBtn.textContent = originalText;
-    restoreBtn.disabled = false;
+    restoreBtn.disabled;
   }
 }
 
@@ -241,6 +250,9 @@ function setupEventListeners() {
           b.classList.remove("active");
         });
       this.classList.add("active");
+
+      // Store chart type in state
+      appState.chartTypes[chartName] = chartType;
 
       // Update chart
       if (chartName === "agency") {
