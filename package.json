@@ -1,0 +1,22 @@
+{
+  "name": "asa-sleep-funding-dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard for analyzing sleep research funding in Australia",
+  "main": "scripts/main.js",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'No build step needed for vanilla JS'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "sleep",
+    "research",
+    "funding",
+    "dashboard"
+  ],
+  "author": "Australasian Sleep Association Research Committee",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
