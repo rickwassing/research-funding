@@ -203,7 +203,7 @@ export function updateClassificationKeywords(newKeywords) {
   }));
 
   console.log(`Updated keywords to ${classificationKeywords.length} keywords`);
-  return classificationKeywords;
+  return allGrants; // Return the updated grants array
 }
 
 // Get default keywords

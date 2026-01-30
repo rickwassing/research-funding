@@ -97,7 +97,7 @@ function handleAddKeyword() {
   const updatedKeywords = addKeyword(newKeyword, appState.keywords);
   if (updatedKeywords) {
     appState.keywords = updatedKeywords;
-    updateClassificationKeywords(appState.keywords);
+    appState.grants = updateClassificationKeywords(appState.keywords);
     renderKeywordChips(appState.keywords, handleRemoveKeyword);
     appState.filteredGrants = getFilteredGrants(appState.grants);
     updateDashboard();
@@ -107,7 +107,7 @@ function handleAddKeyword() {
 
 function handleRemoveKeyword(keywordToRemove) {
   appState.keywords = removeKeyword(keywordToRemove, appState.keywords);
-  updateClassificationKeywords(appState.keywords);
+  appState.grants = updateClassificationKeywords(appState.keywords);
   renderKeywordChips(appState.keywords, handleRemoveKeyword);
   appState.filteredGrants = getFilteredGrants(appState.grants);
   updateDashboard();
@@ -125,7 +125,7 @@ function handleRemoveAllKeywords() {
     )
   ) {
     appState.keywords = removeAllKeywords();
-    updateClassificationKeywords(appState.keywords);
+    appState.grants = updateClassificationKeywords(appState.keywords);
     renderKeywordChips(appState.keywords, handleRemoveKeyword);
     appState.filteredGrants = getFilteredGrants(appState.grants);
     updateDashboard();
@@ -143,7 +143,7 @@ async function handleRestoreDefaultKeywords() {
 
   try {
     appState.keywords = restoreDefaultKeywords(getDefaultKeywords());
-    updateClassificationKeywords(appState.keywords);
+    appState.grants = updateClassificationKeywords(appState.keywords);
     renderKeywordChips(appState.keywords, handleRemoveKeyword);
     appState.filteredGrants = getFilteredGrants(appState.grants);
     updateDashboard();
