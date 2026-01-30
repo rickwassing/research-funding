@@ -8,13 +8,15 @@ An interactive web application for analyzing Australian government research fund
 
 ## 🚀 Quick Start
 
-1. **Open the dashboard locally:** Follow the local development instructions below
+### Option 1: Use the Live Dashboard (Recommended)
+
+1. **Open the live dashboard:** Visit https://rickwassing.github.io/research-funding/
 2. **Wait for data to load:** The dashboard will automatically load 6,437 grant records (takes ~5-10 seconds)
 3. **Start exploring:** Use filters and view statistics
 
-**Note:** GitHub Pages deployment is planned (see Plan 03). Once deployed, the dashboard will be available at `https://rickwassing.github.io/research-funding/`.
+### Option 2: Local Development
 
-**For local development:**
+**For local development or offline use:**
 
 ```bash
 # Navigate to the project folder
@@ -28,6 +30,8 @@ python -m http.server 8080
 # When done, kill the server
 lsof -ti:8080 | xargs kill -9
 ```
+
+**Deployment Status:** ✅ **Live** - The dashboard is deployed via GitHub Pages and automatically updates on every push to the main branch.
 
 ## 📊 What This Dashboard Does
 
@@ -245,8 +249,40 @@ funding-analysis/
 ├── dataset.csv        # 6,437 grant records (4.6MB)
 ├── keywords.csv       # Sleep-related keywords for classification
 ├── README.md          # This documentation
+├── .github/workflows/ # GitHub Actions workflows
+│   └── deploy.yml     # Automatic deployment to GitHub Pages
 └── archive/           # Historical files and backups
 ```
+
+### Deployment
+
+The dashboard is deployed via **GitHub Pages** with automatic continuous deployment:
+
+- **Live URL:** https://rickwassing.github.io/research-funding/
+- **Deployment Method:** GitHub Pages (static site hosting)
+- **CI/CD:** GitHub Actions workflow (`.github/workflows/deploy.yml`)
+- **Trigger:** Automatic deployment on every push to the `main` branch
+- **Manual Deployment:** Available via GitHub Actions interface
+
+**Key Deployment Features:**
+
+- ✅ **Automatic SSL/TLS** (HTTPS)
+- ✅ **Global CDN** for fast loading worldwide
+- ✅ **Automatic cache invalidation** on new deployments
+- ✅ **Version history** via Git commits
+- ✅ **Free hosting** (GitHub Pages)
+
+**To trigger a manual deployment:**
+
+1. Go to the repository's **Actions** tab
+2. Select the **"Deploy to GitHub Pages"** workflow
+3. Click **"Run workflow"** and select the `main` branch
+
+**To monitor deployment status:**
+
+1. Go to the repository's **Settings** > **Pages**
+2. View deployment history and status
+3. Check GitHub Actions runs for detailed logs
 
 ## ❓ Frequently Asked Questions
 
