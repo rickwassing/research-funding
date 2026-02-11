@@ -45,6 +45,8 @@ import {
   setupDetailModalHandler,
 } from "./table-manager.js";
 
+import { exportToCSV } from "./csv-export.js";
+
 // Application state
 let appState = {
   grants: [],
@@ -164,6 +166,40 @@ async function handleRestoreDefaultKeywords() {
     // Restore button state
     restoreBtn.textContent = originalText;
     restoreBtn.disabled;
+  }
+}
+
+// Handle CSV export
+function handleExportCSV() {
+  if (!appState.filteredGrants || appState.filteredGrants.length === 0) {
+    alert("No data available to export. Please check your filters.");
+    return;
+  }
+
+  console.log(`Exporting ${appState.filteredGrants.length} grants to CSV...`);
+
+  // Show loading state on button
+  const exportBtn = document.getElementById("export-csv-btn");
+  const originalText = exportBtn.innerHTML;
+  exportBtn.innerHTML =
+    '<i class="bi bi-hourglass-split me-1"></i> Exporting...';
+  exportBtn.disabled = true;
+
+  try {
+    // Export the filtered grants (all grants across all paginations as requested)
+    exportToCSV(appState.filteredGrants);
+
+    // Success feedback
+    console.log("CSV export completed successfully");
+  } catch (error) {
+    console.error("Error exporting CSV:", error);
+    alert("Error exporting data. Please check the console for details.");
+  } finally {
+    // Restore button state after a short delay
+    setTimeout(() => {
+      exportBtn.innerHTML = originalText;
+      exportBtn.disabled = false;
+    }, 1000);
   }
 }
 
@@ -294,6 +330,11 @@ function setupEventListeners() {
   document
     .getElementById("restore-defaults")
     .addEventListener("click", handleRestoreDefaultKeywords);
+
+  // CSV export button
+  document
+    .getElementById("export-csv-btn")
+    .addEventListener("click", handleExportCSV);
 }
 
 // Start the application when DOM is loaded

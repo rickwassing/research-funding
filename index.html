@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
@@ -57,7 +58,7 @@
         <button class="btn btn-outline-secondary btn-sm w-100" id="reset-filters">Reset Filters</button>
         <br />
         <br />
-        <small>Version 1.0.1 (30 Jan 2026)</small>
+        <small>Version 1.0.2 (12 Feb 2026)</small>
     </div>
 
     <!-- Main Content -->
@@ -257,7 +258,12 @@
 
         <!-- Detailed Data Table -->
         <div class="table-card">
-            <h5>📋 Grant Details</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">📋 Grant Details</h5>
+                <button class="btn btn-primary btn-sm" id="export-csv-btn">
+                    <i class="bi bi-download me-1"></i> Download CSV
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-hover" id="grants-table" style="width: 100%;">
                     <thead>
