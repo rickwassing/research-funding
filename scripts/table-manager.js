@@ -11,10 +11,11 @@ export function initializeDataTable(grants) {
       { data: "id" },
       {
         data: "isInSubset",
-        render: function (data) {
+        render: function (data, type) {
+          if (type === "sort") return data ? 0 : 1;
           return data
-            ? '<span class="badge badge-subset">Subset</span>'
-            : '<span class="badge badge-not-subset">Other</span>';
+            ? '<span class="badge badge-subset">In Subset</span>'
+            : '<span class="badge badge-not-subset">Out of Subset</span>';
         },
       },
       { data: "fundingBody" },
@@ -66,7 +67,7 @@ export function initializeDataTable(grants) {
         searchable: true,
       },
     ],
-    order: [[5, "desc"]],
+    order: [[1, "asc"], [0, "asc"]],
     pageLength: 25,
     lengthMenu: [
       [10, 25, 50, 100],

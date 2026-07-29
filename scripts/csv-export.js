@@ -24,7 +24,7 @@ export function grantsToCSVString(grants) {
     {
       key: "isInSubset",
       header: "Subset_Status",
-      transform: (value) => (value ? "Subset" : "Other"),
+      transform: (value) => (value ? "in_subset" : "out_of_subset"),
     },
   ];
 

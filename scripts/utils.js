@@ -76,14 +76,15 @@ export function debounce(func, wait) {
 export function parseYear(dateStr) {
   if (!dateStr || dateStr.trim() === "") return "Unknown";
   try {
-    // Parse dd-mmm-yyyy format (e.g., 01-Jan-2020)
-    const parts = dateStr.split("-");
-    if (parts.length === 3) {
-      const year = parts[2];
-      // Validate it's a 4-digit year
-      if (/^\d{4}$/.test(year)) {
-        return year;
-      }
+    // Handle d/m/yyyy format (e.g., 1/1/2014)
+    const slashParts = dateStr.split("/");
+    if (slashParts.length === 3 && /^\d{4}$/.test(slashParts[2])) {
+      return slashParts[2];
+    }
+    // Handle dd-mmm-yyyy format (e.g., 01-Jan-2020)
+    const dashParts = dateStr.split("-");
+    if (dashParts.length === 3 && /^\d{4}$/.test(dashParts[2])) {
+      return dashParts[2];
     }
     return "Unknown";
   } catch (error) {
@@ -91,6 +92,7 @@ export function parseYear(dateStr) {
     return "Unknown";
   }
 }
+
 
 // Count grants per keyword (optimized with tokenization)
 export function countKeywordsByGrant(grants, keywords) {
