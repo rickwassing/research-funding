@@ -41,3 +41,12 @@ logs/
 # Temporary files
 tmp/
 temp/
+
+# Analysis pipeline — generated files (large, always re-generatable)
+analysis/embeddings/*.npy
+analysis/*.pkl
+analysis/labelled.csv
+analysis/unlabelled.csv
+analysis/results/ranked_candidates.csv
+analysis/results/cv_performance.txt
+analysis/results/figures/
